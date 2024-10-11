@@ -247,7 +247,7 @@ namespace Lean.Touch
 			}
 
 			// Exists in scene?
-			Object = instance = CwHelper.FindAnyObjectByType<T>();
+			Object = instance = Object.FindObjectOfType<T>();
 
 			if (instance != null)
 			{

@@ -276,7 +276,7 @@ namespace Lean.Common
 
 			if (currentEventSystem == null)
 			{
-				currentEventSystem = CwHelper.FindAnyObjectByType<EventSystem>();
+				currentEventSystem = Object.FindObjectOfType<EventSystem>();
 			}
 
 			if (currentEventSystem != null)

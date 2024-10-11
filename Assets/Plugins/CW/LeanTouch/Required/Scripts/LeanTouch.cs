@@ -269,7 +269,7 @@ namespace Lean.Touch
 
 			if (currentEventSystem == null)
 			{
-				currentEventSystem = CwHelper.FindAnyObjectByType<EventSystem>();
+				currentEventSystem = FindObjectOfType<EventSystem>();
 			}
 
 			return currentEventSystem;
