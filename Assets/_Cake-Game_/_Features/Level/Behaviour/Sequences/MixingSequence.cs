@@ -9,8 +9,15 @@ public class MixingSequence : LevelSequence
     [SerializeField] GameObject StartingImage;
     [SerializeField] GameObject Buttons;
     [SerializeField] GameObject Leanfinger;
+    [SerializeField] GameObject LeanfingerPouring;
     [SerializeField] DragObjectWithinBounds DragStirrer;
     [SerializeField] DOTweenController  Parent;
+    [SerializeField] DOTweenController  smallbowlFlour;
+    [SerializeField] DOTweenController  BigBowlFlour;
+    [SerializeField] Animator BlueBallAnimator,SmallBlueBall;
+    [SerializeField] GameObject BigBowl;
+    [SerializeField] GameObject BowlArrow;
+    [SerializeField] GameObject PouringParticle;
 
     
     int imageCounter=0;
@@ -89,9 +96,39 @@ public class MixingSequence : LevelSequence
                 DragStirrer.enabled = false;
                 FlourStirringImages[^1].gameObject.SetActive(true);
                 FlourStirringImages[previousIndex].gameObject.SetActive(false);
+                StartCoroutine(PlayAnimWithDelay(1f));
             }
         }
 
+    }
+
+    IEnumerator PlayAnimWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        BlueBallAnimator.SetTrigger("moveout");
+        BigBowl.SetActive(true);
+        SmallBlueBall.gameObject.SetActive(true);
+        SmallBlueBall.SetTrigger("movein");
+
+        yield return new WaitForSeconds(1f);
+        BowlArrow.SetActive(true);
+        LeanfingerPouring.SetActive(true);
+    }
+
+    public void PourFlourInBowl()
+    {
+        BowlArrow.SetActive(false);
+        SmallBlueBall.SetTrigger("rotate");
+        PouringParticle.SetActive(true);
+        smallbowlFlour.enabled = true;
+        BigBowlFlour.enabled = true;
+    }
+
+    public void EndSequence()
+    {
+        SmallBlueBall.transform.rotation = new Quaternion(0, 0, 0, SmallBlueBall.transform.rotation.w);
+        SmallBlueBall.SetTrigger("moveout");
+        BigBowl.GetComponent<DOTweenController>().TriggerNextTween();
     }
 }
 
