@@ -5,6 +5,18 @@ using DG.Tweening;
 using ScratchCardAsset;
 public class CakeSequence : LevelSequence
 {
+    [Serializable]
+    public enum CakeType
+    {
+        ChocoCake=0,
+        PlaneCake=1,
+        StawberryCake=2
+    }
+
+
+
+    [SerializeField] CakeType cakeType = CakeType.ChocoCake;
+    [SerializeField] CakeData[] cakeData;
     [SerializeField] DOTweenController CakeTray;
     [SerializeField] DOTweenController CakeBowl;
     [SerializeField] Transform Cake;
@@ -23,6 +35,18 @@ public class CakeSequence : LevelSequence
     [SerializeField] DragObjectWithinBounds IcingTool;
     [SerializeField] ScratchCardManager FinalCakeScratchCard;
     [SerializeField] SpriteRevealFromTop BorderOfCake;
+
+    [Header("SpriteRenderer")]
+    public SpriteRenderer CakeImage;
+    public SpriteRenderer SpatulaImage;
+    public SpriteRenderer BowlFillingImage;
+    public SpriteRenderer SpreaderImage;
+    public SpriteRenderer UpperLayerImage;
+    public SpriteRenderer SideLayerImage;
+
+    public Vector3 sideborderpos;
+    public Vector3 sideborderpos1;
+
     void Start()
     {
         StartSequence();
@@ -73,8 +97,31 @@ public class CakeSequence : LevelSequence
             });
     }
 
-    public void OnCakeButtonClick()
+    void AssignCakeProperties(CakeType type)
     {
+     cakeData[(int)type].CakeSprite.SetActive(true);
+        SpatulaImage.sprite = cakeData[(int)type].SpatulaSpritee;
+        BowlFillingImage.sprite = cakeData[(int)type].BowlFillingSprite;
+       
+    }
+
+    void assignSpreaderProperties(CakeType type)
+    {
+        SpreaderImage.sprite = cakeData[(int)type].SpreaderSprite;
+        UpperLayerImage.sprite = cakeData[(int)type].UpperLayerSprite;
+        SideLayerImage.sprite = cakeData[(int)type].SideLayerSprite;
+        if (type == CakeType.PlaneCake)
+        {
+            SideLayerImage.transform.position = sideborderpos;
+        }
+        else if(type == CakeType.StawberryCake)
+        {
+            SideLayerImage.transform.position = sideborderpos1;
+        }
+    }
+    public void OnCakeButtonClick(int type)
+    {
+        AssignCakeProperties((CakeType)type);
         CakeCanvasAnimator.SetTrigger("out");
         BowlWithChoco.gameObject.SetActive(true);
         BowlWithChoco.SetTrigger("moveinspread");
@@ -128,8 +175,9 @@ public class CakeSequence : LevelSequence
         }
     }
 
-    public void OnIcingButtonClick()
+    public void OnIcingButtonClick(int type)
     {
+        assignSpreaderProperties((CakeType)type);
         IcingCanvasAnimator.SetTrigger("out");
         IcingTool.gameObject.SetActive(true);
         CakeTopIcing.gameObject.SetActive(true);
@@ -160,9 +208,9 @@ public class CakeSequence : LevelSequence
 
         // Incrementally increase the scale if it's not yet 1
         CakeTopIcing.localScale = new Vector3(
-            CakeTopIcing.localScale.x + 0.001f,
-            CakeTopIcing.localScale.y + 0.001f,
-            CakeTopIcing.localScale.z + 0.001f);
+            CakeTopIcing.localScale.x + 0.01f,
+            CakeTopIcing.localScale.y + 0.01f,
+            CakeTopIcing.localScale.z + 0.01f);
     }
 
     public void Topping_Canvas()
@@ -178,4 +226,15 @@ public class CakeSequence : LevelSequence
         Toppings.gameObject.SetActive(true);
         StartCoroutine(ExecuteAfterDelay(1f, () => { ToppingCanvasAnimator.gameObject.SetActive(false); })); 
     }
+}
+
+[Serializable]
+public class CakeData
+{
+    public GameObject CakeSprite;
+    public Sprite SpatulaSpritee;
+    public Sprite BowlFillingSprite;
+    public Sprite SpreaderSprite;
+    public Sprite UpperLayerSprite;
+    public Sprite SideLayerSprite;
 }

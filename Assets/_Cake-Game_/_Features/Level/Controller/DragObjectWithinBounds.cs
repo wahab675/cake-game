@@ -158,8 +158,17 @@ public class DragObjectWithinBounds : MonoBehaviour
         newPosition.x = Mathf.Clamp(newPosition.x, minBounds.x, maxBounds.x);
         newPosition.y = Mathf.Clamp(newPosition.y, minBounds.y, maxBounds.y);
 
+
         // Apply the clamped position to the object
-        transform.localPosition = newPosition;
+
+        if (dragMode == DragMode.DragAnywhere)
+        {
+            transform.localPosition = newPosition;
+        }
+        else
+        {
+            transform.position = newPosition;
+        }
         OnDraggingAction?.Invoke();
     }
 
