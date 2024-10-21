@@ -15,8 +15,10 @@ public class CakeSequence : LevelSequence
     [SerializeField] GameObject[] LineFInger;
     [SerializeField] Animator CakeCanvasAnimator;
     [SerializeField] Animator IcingCanvasAnimator;
+    [SerializeField] Animator ToppingCanvasAnimator;
     [SerializeField] Animator BowlWithChoco;
     [SerializeField] Animator TutHand;
+    [SerializeField] Animator Toppings;
     [SerializeField] DragObjectWithinBounds SpectulaObj;
     [SerializeField] DragObjectWithinBounds IcingTool;
     [SerializeField] ScratchCardManager FinalCakeScratchCard;
@@ -63,6 +65,7 @@ public class CakeSequence : LevelSequence
                 BowlFront.SetActive(false);
                 Cake.DOLocalMove(new Vector3(-0.02f, 2.56f, 0), 2f).SetEase(Ease.OutBack).OnComplete(() =>
                 {
+                    Cake.DOScale(new Vector3(0.908f, 0.876f, 0.75f),1f);
                     CakeBowl.TriggerNextTween();
                     CakeCanvasAnimator.gameObject.SetActive(true);
                     CakeCanvasAnimator.SetTrigger("in");
@@ -130,14 +133,14 @@ public class CakeSequence : LevelSequence
         IcingCanvasAnimator.SetTrigger("out");
         IcingTool.gameObject.SetActive(true);
         CakeTopIcing.gameObject.SetActive(true);
-        //IcingTool.ObjectToScaleOnDrag += ()=> CakeTopIcing;
+        StartCoroutine(ExecuteAfterDelay(1f, () => { IcingCanvasAnimator.gameObject.SetActive(false); }));
         IcingTool.OnDraggingAction += OnDraggingIcingTool;
     }
     float epsilon = 0.001f;
     public void OnDraggingIcingTool()
     {
         // Define an epsilon to account for floating-point precision issues
-      
+
 
         // Check if the scale is approximately 1 on all axes
         if (Mathf.Abs(CakeTopIcing.localScale.x - 1f) < epsilon &&
@@ -146,9 +149,11 @@ public class CakeSequence : LevelSequence
         {
             BorderOfCake.gameObject.SetActive(true);
             BorderOfCake.enabled = true;
-            StartCoroutine(ExecuteAfterDelay(2f, () => {
-                
-                IcingTool.GetComponent<DOTweenController>().TriggerNextTween(); }));
+            StartCoroutine(ExecuteAfterDelay(2f, () =>
+            {
+
+                IcingTool.GetComponent<DOTweenController>().TriggerNextTween();
+            }));
             IcingTool.enabled = false;
             return;
         }
@@ -158,5 +163,19 @@ public class CakeSequence : LevelSequence
             CakeTopIcing.localScale.x + 0.001f,
             CakeTopIcing.localScale.y + 0.001f,
             CakeTopIcing.localScale.z + 0.001f);
+    }
+
+    public void Topping_Canvas()
+    {
+
+        ToppingCanvasAnimator.gameObject.SetActive(true);
+        ToppingCanvasAnimator.SetTrigger("in");
+    }
+
+    public void OnClickStawberryButton()
+    {
+        ToppingCanvasAnimator.SetTrigger("out");
+        Toppings.gameObject.SetActive(true);
+        StartCoroutine(ExecuteAfterDelay(1f, () => { ToppingCanvasAnimator.gameObject.SetActive(false); })); 
     }
 }
