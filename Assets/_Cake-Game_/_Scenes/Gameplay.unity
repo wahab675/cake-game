@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 5284236}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.9, y: -4.64, z: 0}
+  m_LocalPosition: {x: -21, y: -4.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -891,11 +891,11 @@ MonoBehaviour:
   tweenActions:
   - tweenType: 2
     duration: 0.5
-    delay: 0.5
+    delay: 0
     targetPosition: {x: 0, y: 0, z: 0}
     targetRotation: {x: 0, y: 0, z: 0}
-    targetScale: {x: 0.7, y: 0.7, z: 0.7}
-    easeType: 0
+    targetScale: {x: 0.5, y: 0.5, z: 0.5}
+    easeType: 1
     loopType: 0
     loops: 0
     tweenEvents:
@@ -1034,7 +1034,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -758902419
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: aba1f29d30c7b1a4cbb196eece389101, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2318,7 +2318,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -758902419
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: aba1f29d30c7b1a4cbb196eece389101, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2346,11 +2346,11 @@ MonoBehaviour:
   tweenActions:
   - tweenType: 2
     duration: 0.5
-    delay: 0.5
+    delay: 0
     targetPosition: {x: 0, y: 0, z: 0}
     targetRotation: {x: 0, y: 0, z: 0}
-    targetScale: {x: 0.7, y: 0.7, z: 0.7}
-    easeType: 0
+    targetScale: {x: 0.5, y: 0.5, z: 0.5}
+    easeType: 1
     loopType: 0
     loops: 0
     tweenEvents:
@@ -2772,7 +2772,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -758902419
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: ea4728363736b6f408e5a177b70aaffe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -3047,8 +3047,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragMode: 1
-  minBounds: {x: -3, y: -0.1054222}
-  maxBounds: {x: 2.61, y: 1.43}
+  minBounds: {x: -2.64, y: -1.37}
+  maxBounds: {x: 2.89, y: 1.71}
   isDragging: 0
   scaleFactor: 0.01
 --- !u!65 &350132693
@@ -3613,8 +3613,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 3
-      minScalar: 1
+      scalar: 1.27
+      minScalar: 0.27
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -3784,8 +3784,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 0.5
+      scalar: 0.61
+      minScalar: 0.63
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4108,7 +4108,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 1.3
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4367,8 +4367,8 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 200
-      minScalar: 50
+      scalar: 1000
+      minScalar: 100
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4477,7 +4477,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 30
+        scalar: 0
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -5050,7 +5050,7 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.17
+      scalar: 1.48
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5103,7 +5103,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: -1.04
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -10358,7 +10358,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2026389319}
         m_TargetAssemblyTypeName: MixingSequence, Assembly-CSharp
-        m_MethodName: OnStirrerButtonClick
+        m_MethodName: OnStirrerButtonClick1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12528,8 +12528,8 @@ MonoBehaviour:
   targetTransform: {fileID: 761978970}
   tweenActions:
   - tweenType: 2
-    duration: 4
-    delay: 1
+    duration: 3
+    delay: 0.5
     targetPosition: {x: 0, y: 0, z: 0}
     targetRotation: {x: 0, y: 0, z: 0}
     targetScale: {x: 0, y: 0, z: 0}
@@ -15111,7 +15111,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -758902419
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: ea4728363736b6f408e5a177b70aaffe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -15467,7 +15467,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -758902419
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: ee7d0c0b62dbe1f46bf2182a656e9cc7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -15560,7 +15560,7 @@ Transform:
   m_GameObject: {fileID: 1065036175}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.74, y: 2.7133, z: 0}
+  m_LocalPosition: {x: 15.27, y: 2.7133, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16188,7 +16188,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -758902419
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: ee7d0c0b62dbe1f46bf2182a656e9cc7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -17838,7 +17838,7 @@ Transform:
   m_GameObject: {fileID: 1323973405}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.24, y: -2.65, z: 0}
+  m_LocalPosition: {x: -2.39, y: -2.55, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17926,7 +17926,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1323973405}
   serializedVersion: 8
-  lengthInSec: 5
+  lengthInSec: 3
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -18173,7 +18173,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 1
-      minScalar: 1.89
+      minScalar: 1.66
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -18919,7 +18919,7 @@ ParticleSystem:
       repeatInterval: 0.01
       probability: 1
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       serializedVersion: 2
       minMaxState: 1
@@ -18929,19 +18929,19 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 3
-          time: 0
+          time: 0.03270432
           value: 0
-          inSlope: 0
-          outSlope: 1
+          inSlope: 0.8231609
+          outSlope: 0.8231609
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
-          outWeight: 0.33333334
+          outWeight: 0.17582598
         - serializedVersion: 3
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 0
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -18983,9 +18983,9 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
+          value: 0.23272705
           inSlope: 0
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -18994,7 +18994,7 @@ ParticleSystem:
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 0
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -19036,9 +19036,9 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
+          value: 0.29818726
           inSlope: 0
-          outSlope: 1
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -19047,7 +19047,7 @@ ParticleSystem:
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 0
+          outSlope: 1
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -19079,7 +19079,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    separateAxes: 0
+    separateAxes: 1
   RotationModule:
     enabled: 0
     x:
@@ -19438,7 +19438,7 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -0.87
+      scalar: -1.29
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -24861,7 +24861,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -758902419
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 5ae8dc03354b0a7409c6bfc36ab02749, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -25873,7 +25873,7 @@ MonoBehaviour:
   tweenActions:
   - tweenType: 2
     duration: 4
-    delay: 1
+    delay: 0.1
     targetPosition: {x: 0, y: 0, z: 0}
     targetRotation: {x: 0, y: 0, z: 0}
     targetScale: {x: 0.9392, y: 1, z: 1}
@@ -26248,8 +26248,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 3
-      minScalar: 1
+      scalar: 1.27
+      minScalar: 0.27
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -26419,8 +26419,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 0.5
+      scalar: 0.61
+      minScalar: 0.63
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -26736,14 +26736,14 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 2000
+    maxNumParticles: 10000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 1.39
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -27002,8 +27002,8 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 200
-      minScalar: 50
+      scalar: 1000
+      minScalar: 100
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -27112,7 +27112,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 30
+        scalar: 0
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -27738,7 +27738,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.77
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -31823,7 +31823,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -758902419
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 5ae8dc03354b0a7409c6bfc36ab02749, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -33268,7 +33268,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1977941510}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2026389319}
+        m_TargetAssemblyTypeName: MixingSequence, Assembly-CSharp
+        m_MethodName: OnStirrerButtonClick2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1977941510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33867,6 +33879,9 @@ MonoBehaviour:
   BigBowl: {fileID: 447263382}
   BowlArrow: {fileID: 2008116790}
   PouringParticle: {fileID: 1323973405}
+  StirrerSpriteRend: {fileID: 350132691}
+  Stirrer1: {fileID: 21300000, guid: ec8701b33ecb92a4097d20c1426227e8, type: 3}
+  Stirrer2: {fileID: 21300000, guid: 723f4764842e5d448976f6119fb1d4c0, type: 3}
 --- !u!1 &2040644237
 GameObject:
   m_ObjectHideFlags: 0
@@ -34271,7 +34286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2087961341
 Transform:
   m_ObjectHideFlags: 0
@@ -34282,8 +34297,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -3.82, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 509415423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

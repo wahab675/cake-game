@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class MixingSequence : LevelSequence
     [SerializeField] GameObject BigBowl;
     [SerializeField] GameObject BowlArrow;
     [SerializeField] GameObject PouringParticle;
+    [SerializeField] SpriteRenderer StirrerSpriteRend;
+    [SerializeField] Sprite Stirrer1, Stirrer2;
 
     
     int imageCounter=0;
@@ -31,8 +34,15 @@ public class MixingSequence : LevelSequence
 
     // Update is called once per frame
     
-    public void OnStirrerButtonClick()
+    public void OnStirrerButtonClick1()
     {
+        StirrerSpriteRend.sprite = Stirrer1;
+        Parent.gameObject.SetActive(true);
+        Buttons.GetComponent<DOTweenController>().TriggerNextTween();
+    }
+    public void OnStirrerButtonClick2()
+    {
+        StirrerSpriteRend.sprite = Stirrer2;
         Parent.gameObject.SetActive(true);
         Buttons.GetComponent<DOTweenController>().TriggerNextTween();
     }
@@ -41,13 +51,14 @@ public class MixingSequence : LevelSequence
         Stirrer.SetTrigger(trigger);
     }
     private int previousIndex = -1;
+    private int tempcounter =0;
     public void ChangeImages()
     {
         StartingImage.SetActive(false);
         if (imageCounter < 15 && DragStirrer.enabled==false)
         {
             // Randomly select an image index
-            int randomIndex = Random.Range(0, FlourStirringImages.Length-1);
+            int randomIndex = UnityEngine.Random.Range(0, FlourStirringImages.Length-1);
 
             // If there was a previous active image, set it to inactive
             if (previousIndex != -1)
@@ -68,44 +79,61 @@ public class MixingSequence : LevelSequence
                 imageCounter = 0;
                 DragStirrer.enabled = true;
                 Leanfinger.SetActive(false);
-                DragStirrer.OnDragBeginAction += ChangeImages;
+                DragStirrer.OnDraggingAction += ChangeImages;
             }
         }
         else if (imageCounter < 10 && DragStirrer.enabled == true)
         {
-            int randomIndex = Random.Range(0, FlourStirringImages.Length - 1);
-
-            // If there was a previous active image, set it to inactive
-            if (previousIndex != -1)
-            {
-                FlourStirringImages[previousIndex].gameObject.SetActive(false);
-            }
-
-            // Activate the randomly selected image
-            FlourStirringImages[randomIndex].gameObject.SetActive(true);
-            PlayStirrerAnimation("move");
-            // Store the current index sas previous for the next iteration
-            previousIndex = randomIndex;
-
-            // Increment the counter
-            imageCounter++;
-            if(imageCounter == 10)
+            if (imageCounter >=9)
             {
                 Parent.TriggerNextTween();
-                DragStirrer.OnDragBeginAction -= ChangeImages;
-                DragStirrer.enabled = false;
-                FlourStirringImages[^1].gameObject.SetActive(true);
-                FlourStirringImages[previousIndex].gameObject.SetActive(false);
-                StartCoroutine(PlayAnimWithDelay(1f));
             }
+            StartCoroutine(ExecuteAfterDelay(0.3f, () => {
+                int randomIndex = UnityEngine.Random.Range(0, FlourStirringImages.Length - 1);
+
+                // If there was a previous active image, set it to inactive
+                if (previousIndex != -1)
+                {
+                    FlourStirringImages[previousIndex].gameObject.SetActive(false);
+                }
+
+                // Activate the randomly selected image
+                FlourStirringImages[randomIndex].gameObject.SetActive(true);
+                PlayStirrerAnimation("move");
+                // Store the current index sas previous for the next iteration
+                previousIndex = randomIndex;
+
+                if (tempcounter >= 20)
+                {
+                    tempcounter = 0;
+                    imageCounter++;
+                }
+                tempcounter++;
+                if (imageCounter == 10)
+                {
+                    Parent.gameObject.SetActive(false);
+                    DragStirrer.OnDraggingAction -= ChangeImages;
+                    DragStirrer.enabled = false;
+                    FlourStirringImages[^1].gameObject.SetActive(true);
+                    FlourStirringImages[previousIndex].gameObject.SetActive(false);
+                    StartCoroutine(PlayAnimWithDelay(1f));
+                }
+            }));
+           
+          
+           
         }
 
     }
 
     IEnumerator PlayAnimWithDelay(float delay)
     {
+        yield return null;
+     
         yield return new WaitForSeconds(delay);
+       
         BlueBallAnimator.SetTrigger("moveout");
+        yield return new WaitForSeconds(delay);
         BigBowl.SetActive(true);
         SmallBlueBall.gameObject.SetActive(true);
         SmallBlueBall.SetTrigger("movein");
@@ -114,14 +142,27 @@ public class MixingSequence : LevelSequence
         BowlArrow.SetActive(true);
         LeanfingerPouring.SetActive(true);
     }
+    public IEnumerator ExecuteAfterDelay(float delays, Action action)
+    {
+        // Wait until the condition is true
+        yield return new WaitForSeconds(delays);
 
+        // Execute the passed method
+        action?.Invoke();
+
+        yield return null;
+    }
     public void PourFlourInBowl()
     {
         BowlArrow.SetActive(false);
         SmallBlueBall.SetTrigger("rotate");
-        PouringParticle.SetActive(true);
-        smallbowlFlour.enabled = true;
-        BigBowlFlour.enabled = true;
+        StartCoroutine(ExecuteAfterDelay(0.3f, () => { PouringParticle.SetActive(true);
+            smallbowlFlour.enabled = true;
+            BigBowlFlour.enabled = true;
+
+        }));
+       
+       
     }
 
     public void EndSequence()

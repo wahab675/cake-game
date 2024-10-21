@@ -36,7 +36,7 @@ public class MakingDoughSequence : LevelSequence
                 SugarPot.SetTrigger("Pouring");
                 _fingerDownCurrentAction = null;
 
-                // these are animation clip lengths
+                DOVirtual.DelayedCall(2.5f, delegate { SugarSpreadInBowl.transform.DOScale(Vector3.one, 1.25f);  });
                 DOVirtual.DelayedCall(4.163f , delegate { OnDonePouringSugar(); });
             };
         });
@@ -51,7 +51,7 @@ public class MakingDoughSequence : LevelSequence
     void OnDonePouringSugar()
     {
         SugarParticles.SetActive(false);
-        SugarSpreadInBowl.SetActive(true);
+     
       
     }
 
