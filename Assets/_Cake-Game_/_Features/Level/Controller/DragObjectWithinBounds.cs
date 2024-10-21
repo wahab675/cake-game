@@ -1,7 +1,17 @@
 using UnityEngine;
 using System;
+
 public class DragObjectWithinBounds : MonoBehaviour
 {
+    // Enum to choose the drag mode
+    public enum DragMode
+    {
+        DragOnObject,  // Dragging by clicking the object
+        DragAnywhere   // Dragging from anywhere on the screen
+    }
+
+    public DragMode dragMode = DragMode.DragOnObject; // Drag mode selector in Inspector
+
     public Vector2 minBounds; // Minimum X and Y bounds
     public Vector2 maxBounds; // Maximum X and Y bounds
 
@@ -10,6 +20,7 @@ public class DragObjectWithinBounds : MonoBehaviour
     public bool isDragging = false;
 
     public Action OnDragBeginAction;
+    public Action OnDraggingAction;
 
     void Start()
     {
@@ -18,12 +29,51 @@ public class DragObjectWithinBounds : MonoBehaviour
 
     void Update()
     {
-        // Check for mouse or touch input to start dragging
+        // Check for drag initiation based on the selected drag mode
+        if (dragMode == DragMode.DragOnObject)
+        {
+            DragOnObject();
+        }
+        else if (dragMode == DragMode.DragAnywhere)
+        {
+            DragAnywhere();
+        }
+    }
+
+    void DragOnObject()
+    {
+        // Dragging only when clicking directly on the object
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Check if the click/touch is on the object using a raycast
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit) && hit.transform == transform)
+            {
+                StartDragging(Input.mousePosition);
+            }
+        }
+
+        // Handle dragging or touch events
+        HandleDrag();
+    }
+
+    void DragAnywhere()
+    {
+        // Dragging from anywhere on the screen
         if (Input.GetMouseButtonDown(0))
         {
             StartDragging(Input.mousePosition);
         }
-        else if (Input.touchCount > 0)
+
+        // Handle dragging or touch events
+        HandleDrag();
+    }
+
+    void HandleDrag()
+    {
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -37,13 +87,11 @@ public class DragObjectWithinBounds : MonoBehaviour
             }
         }
 
-        // While dragging with mouse
         if (isDragging && Input.GetMouseButton(0))
         {
             OnDrag(Input.mousePosition);
         }
 
-        // Stop dragging if mouse button is released or touch ends
         if (Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
         {
             isDragging = false;
@@ -54,7 +102,11 @@ public class DragObjectWithinBounds : MonoBehaviour
     {
         // Calculate the offset between the object's position and the mouse/touch position
         Vector3 objectPosition = GetWorldPosition(inputPosition);
+
+        // Ensure the Z component is properly handled to avoid depth issues
         offset = transform.position - objectPosition;
+        offset.z = 0;  // Ensure no Z-axis shift occurs when dragging
+
         isDragging = true;
         OnDragBeginAction?.Invoke();
     }
@@ -64,6 +116,9 @@ public class DragObjectWithinBounds : MonoBehaviour
         // Convert the mouse/touch position to world space
         Vector3 worldPosition = GetWorldPosition(inputPosition);
 
+        // Adjust the object's Z to maintain its original Z position
+        worldPosition.z = transform.position.z;
+
         // Calculate the new position with the offset
         Vector3 newPosition = worldPosition + offset;
 
@@ -72,13 +127,13 @@ public class DragObjectWithinBounds : MonoBehaviour
         newPosition.y = Mathf.Clamp(newPosition.y, minBounds.y, maxBounds.y);
 
         // Apply the clamped position to the object
-        transform.localPosition = newPosition;
+        transform.position = newPosition;
+        OnDraggingAction?.Invoke();
     }
 
-    // Convert the screen position (mouse/touch) to world position
     Vector3 GetWorldPosition(Vector3 inputPosition)
     {
-        inputPosition.z = Mathf.Abs(mainCamera.transform.position.z);  // Set the Z distance
-        return mainCamera.ScreenToWorldPoint(inputPosition);  // Convert screen position to world space
+        inputPosition.z = Mathf.Abs(mainCamera.transform.position.z);
+        return mainCamera.ScreenToWorldPoint(inputPosition);
     }
 }

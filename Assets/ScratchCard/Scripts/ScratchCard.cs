@@ -42,6 +42,7 @@ namespace ScratchCardAsset
 				if (Eraser != null)
 				{
 					var blendOp = _mode == ScratchMode.Erase ? (int) BlendOp.Add : (int) BlendOp.ReverseSubtract;
+					
 					Eraser.SetInt(BlendOpShaderParam, blendOp);
 				}
 			}

@@ -17,8 +17,8 @@ namespace ScratchCardAsset
 		private RenderTargetIdentifier rti;
 		private CommandBuffer commandBuffer;
 		private Mesh mesh;
-		private float currentProgress;
-		private bool isCompleted;
+		public float currentProgress;
+		public bool isCompleted;
 
 		#region MonoBehaviour Methods
 
@@ -69,7 +69,8 @@ namespace ScratchCardAsset
 			percentRenderTexture = new RenderTexture(1, 1, 0, RenderTextureFormat.ARGB32);
 			rti = new RenderTargetIdentifier(percentRenderTexture);
 			mesh = MeshGenerator.GenerateQuad(Vector3.one, Vector3.zero);
-		}
+           
+        }
 
 		/// <summary>
 		/// Calculates scratch progress
