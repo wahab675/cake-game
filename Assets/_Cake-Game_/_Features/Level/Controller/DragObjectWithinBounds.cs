@@ -21,6 +21,7 @@ public class DragObjectWithinBounds : MonoBehaviour
 
     public Action OnDragBeginAction;
     public Action OnDraggingAction;
+    public Func<Transform> ObjectToScaleOnDrag;
 
     void Start()
     {
@@ -71,6 +72,27 @@ public class DragObjectWithinBounds : MonoBehaviour
         HandleDrag();
     }
 
+    private Vector3 initialDragPosition;
+    private Vector3 initialScale;
+    public float scaleFactor = 0.01f;
+    void ScaleObject(Vector3 inputPosition, Transform targetObjectToScale)
+    {
+        if(targetObjectToScale.localScale == Vector3.one)
+        {
+            return;
+        }
+        // Get the current drag position
+        Vector3 currentDragPosition = GetWorldPosition(inputPosition);
+
+        // Calculate the difference between the initial and current drag positions
+        float dragDistance = (currentDragPosition - initialDragPosition).magnitude;
+
+        // Scale the object based on the drag distance and the scale factor
+        float scaleAmount = 1 + dragDistance * scaleFactor;
+
+        // Apply the new scale to the object
+        targetObjectToScale.localScale = initialScale * scaleAmount;
+    }
     void HandleDrag()
     {
         if (Input.touchCount > 0)
@@ -102,7 +124,12 @@ public class DragObjectWithinBounds : MonoBehaviour
     {
         // Calculate the offset between the object's position and the mouse/touch position
         Vector3 objectPosition = GetWorldPosition(inputPosition);
-
+        initialDragPosition = GetWorldPosition(inputPosition);
+        if(ObjectToScaleOnDrag != null)
+        {
+            initialScale = ObjectToScaleOnDrag().localScale;
+        }
+      
         // Ensure the Z component is properly handled to avoid depth issues
         offset = transform.position - objectPosition;
         offset.z = 0;  // Ensure no Z-axis shift occurs when dragging
@@ -116,6 +143,11 @@ public class DragObjectWithinBounds : MonoBehaviour
         // Convert the mouse/touch position to world space
         Vector3 worldPosition = GetWorldPosition(inputPosition);
 
+        if (ObjectToScaleOnDrag != null)
+        {
+
+        ScaleObject(initialDragPosition,ObjectToScaleOnDrag());
+        }
         // Adjust the object's Z to maintain its original Z position
         worldPosition.z = transform.position.z;
 
