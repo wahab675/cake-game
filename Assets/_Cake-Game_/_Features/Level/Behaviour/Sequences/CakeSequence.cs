@@ -27,10 +27,15 @@ public class CakeSequence : LevelSequence
     [SerializeField] GameObject[] LineFInger;
     [SerializeField] Animator CakeCanvasAnimator;
     [SerializeField] Animator IcingCanvasAnimator;
+    
     [SerializeField] Animator ToppingCanvasAnimator;
+   
+    
     [SerializeField] Animator BowlWithChoco;
     [SerializeField] Animator TutHand;
     [SerializeField] Animator Toppings;
+    [SerializeField] Animator FirstToppingCanvasAnimator;
+    [SerializeField] Animator ThirdToppingCanvasAnimator;
     [SerializeField] DragObjectWithinBounds SpectulaObj;
     [SerializeField] DragObjectWithinBounds IcingTool;
     [SerializeField] ScratchCardManager FinalCakeScratchCard;
@@ -99,7 +104,7 @@ public class CakeSequence : LevelSequence
 
     void AssignCakeProperties(CakeType type)
     {
-     cakeData[(int)type].CakeSprite.SetActive(true);
+        cakeData[(int)type].CakeSprite.SetActive(true);
         SpatulaImage.sprite = cakeData[(int)type].SpatulaSpritee;
         BowlFillingImage.sprite = cakeData[(int)type].BowlFillingSprite;
        
@@ -224,6 +229,16 @@ public class CakeSequence : LevelSequence
     {
         ToppingCanvasAnimator.SetTrigger("out");
         Toppings.gameObject.SetActive(true);
+        StartCoroutine(ExecuteAfterDelay(1f, () => { ToppingCanvasAnimator.gameObject.SetActive(false); })); 
+    } public void OnClickFirstToppingButton()
+    {
+        ToppingCanvasAnimator.SetTrigger("out");
+        FirstToppingCanvasAnimator.gameObject.SetActive(true);
+        StartCoroutine(ExecuteAfterDelay(1f, () => { ToppingCanvasAnimator.gameObject.SetActive(false); })); 
+    } public void OnClickThirdToppingButton()
+    {
+        ToppingCanvasAnimator.SetTrigger("out");
+        ThirdToppingCanvasAnimator.gameObject.SetActive(true);
         StartCoroutine(ExecuteAfterDelay(1f, () => { ToppingCanvasAnimator.gameObject.SetActive(false); })); 
     }
 }

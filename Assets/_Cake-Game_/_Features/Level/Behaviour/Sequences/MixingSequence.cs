@@ -59,22 +59,22 @@ public class MixingSequence : LevelSequence
         {
             // Randomly select an image index
             int randomIndex = UnityEngine.Random.Range(0, FlourStirringImages.Length-1);
-
+        
             // If there was a previous active image, set it to inactive
             if (previousIndex != -1)
             {
                 FlourStirringImages[previousIndex].gameObject.SetActive(false);
             }
-
+        
             // Activate the randomly selected image
             FlourStirringImages[randomIndex].gameObject.SetActive(true);
             PlayStirrerAnimation("still");
             // Store the current index as previous for the next iteration
             previousIndex = randomIndex;
-
+        
             // Increment the counter
             imageCounter++;
-            if(imageCounter == 15)
+            if(imageCounter >0)
             {
                 imageCounter = 0;
                 DragStirrer.enabled = true;
@@ -84,25 +84,24 @@ public class MixingSequence : LevelSequence
         }
         else if (imageCounter < 10 && DragStirrer.enabled == true)
         {
-            if (imageCounter >=9)
+            if (imageCounter >=0)
             {
                 Parent.TriggerNextTween();
             }
             StartCoroutine(ExecuteAfterDelay(0.3f, () => {
+                Debug.Log("Here"); 
                 int randomIndex = UnityEngine.Random.Range(0, FlourStirringImages.Length - 1);
-
-                // If there was a previous active image, set it to inactive
+        
                 if (previousIndex != -1)
                 {
                     FlourStirringImages[previousIndex].gameObject.SetActive(false);
                 }
-
-                // Activate the randomly selected image
+        
                 FlourStirringImages[randomIndex].gameObject.SetActive(true);
                 PlayStirrerAnimation("move");
                 // Store the current index sas previous for the next iteration
                 previousIndex = randomIndex;
-
+        
                 if (tempcounter >= 20)
                 {
                     tempcounter = 0;
@@ -119,10 +118,8 @@ public class MixingSequence : LevelSequence
                     StartCoroutine(PlayAnimWithDelay(1f));
                 }
             }));
-           
-          
-           
         }
+        
 
     }
 
