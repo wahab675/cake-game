@@ -14,7 +14,7 @@ public class DOTweenEvent
 public class DOTweenController : MonoBehaviour
 {
     // Enum to select the type of tween in the Inspector
-    public enum TweenType { Move, Rotate, Scale,LocalMove }
+    public enum TweenType { Move, Rotate, Scale, LocalMove }
 
     [System.Serializable]
     public class TweenAction
@@ -37,7 +37,7 @@ public class DOTweenController : MonoBehaviour
     public TweenAction[] tweenActions;
 
     // Event handlers exposed to Inspector
-  
+
 
     [SerializeField] private int currentTweenIndex = 0; // Track the current tween
     private Tween currentTween;
@@ -50,14 +50,14 @@ public class DOTweenController : MonoBehaviour
     [ContextMenu("PlayTween")]
     void PlayNextTween()
     {
-        if (currentTweenIndex >= tweenActions.Length)
+        if(currentTweenIndex >= tweenActions.Length)
         {
             return; // No more tweens to play
         }
 
         TweenAction action = tweenActions[currentTweenIndex];
 
-        switch (action.tweenType)
+        switch(action.tweenType)
         {
             case TweenType.Move:
                 currentTween = targetTransform.DOMove(action.targetPosition, action.duration)
@@ -99,7 +99,7 @@ public class DOTweenController : MonoBehaviour
     // This method is called when a tween completes
     void OnTweenComplete()
     {
-      tweenActions[currentTweenIndex].tweenEvents.onComplete?.Invoke();
+        tweenActions[currentTweenIndex].tweenEvents.onComplete?.Invoke();
 
         // Move to the next tween in the array
         currentTweenIndex++;
@@ -120,8 +120,8 @@ public class DOTweenController : MonoBehaviour
 
     public void PlayCurrentTween()
     {
-       
-           currentTween?.Play();
+
+        currentTween?.Play();
     }
 
     public void PauseCurrentTween()
@@ -142,11 +142,11 @@ public class DOTweenController : MonoBehaviour
 
     public void UpdateTweenIndex(int value)
     {
-        currentTweenIndex+= value;
+        currentTweenIndex += value;
     }
     private void OnDestroy()
     {
-        if (currentTween != null)
+        if(currentTween != null)
         {
             currentTween.Kill();
         }

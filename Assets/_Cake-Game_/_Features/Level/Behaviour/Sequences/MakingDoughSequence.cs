@@ -13,31 +13,21 @@ public class MakingDoughSequence : LevelSequence
     [SerializeField] GameObject SugarParticles;
 
     Action _fingerDownCurrentAction;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-   public  void StartSugar()
+    public void StartSugar()
     {
         SugarPot.gameObject.SetActive(true);
-        StartCoroutine(TurnOnFingerHandler(1.5f,LeanFingerHandler));
+        StartCoroutine(TurnOnFingerHandler(1.5f, LeanFingerHandler));
         DOVirtual.DelayedCall(0.89f, delegate
         {
             _fingerDownCurrentAction = delegate
             {
-                StartCoroutine(TurnOnFingerHandler(1.5f, SugarParticles)); 
+                StartCoroutine(TurnOnFingerHandler(1.5f, SugarParticles));
                 SugarPot.SetTrigger("Pouring");
                 _fingerDownCurrentAction = null;
 
-                DOVirtual.DelayedCall(2.5f, delegate { SugarSpreadInBowl.transform.DOScale(Vector3.one, 1.25f);  });
-                DOVirtual.DelayedCall(4.163f , delegate { OnDonePouringSugar(); });
+                DOVirtual.DelayedCall(2.5f, delegate { SugarSpreadInBowl.transform.DOScale(Vector3.one, 1.25f); });
+                DOVirtual.DelayedCall(4.163f, delegate { OnDonePouringSugar(); });
             };
         });
     }
@@ -51,8 +41,8 @@ public class MakingDoughSequence : LevelSequence
     void OnDonePouringSugar()
     {
         SugarParticles.SetActive(false);
-     
-      
+
+
     }
 
     public void HandleFingerDown()

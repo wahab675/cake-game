@@ -22,7 +22,7 @@ public class MixingSequence : LevelSequence
     [SerializeField] SpriteRenderer StirrerSpriteRend;
     [SerializeField] Sprite Stirrer1, Stirrer2;
 
-    
+
     int imageCounter=0;
     // Start is called before the first frame update
     void Start()
@@ -33,7 +33,7 @@ public class MixingSequence : LevelSequence
     }
 
     // Update is called once per frame
-    
+
     public void OnStirrerButtonClick1()
     {
         StirrerSpriteRend.sprite = Stirrer1;
@@ -55,26 +55,26 @@ public class MixingSequence : LevelSequence
     public void ChangeImages()
     {
         StartingImage.SetActive(false);
-        if (imageCounter < 15 && DragStirrer.enabled==false)
+        if(imageCounter < 15 && DragStirrer.enabled == false)
         {
             // Randomly select an image index
             int randomIndex = UnityEngine.Random.Range(0, FlourStirringImages.Length-1);
-        
+
             // If there was a previous active image, set it to inactive
-            if (previousIndex != -1)
+            if(previousIndex != -1)
             {
                 FlourStirringImages[previousIndex].gameObject.SetActive(false);
             }
-        
+
             // Activate the randomly selected image
             FlourStirringImages[randomIndex].gameObject.SetActive(true);
             PlayStirrerAnimation("still");
             // Store the current index as previous for the next iteration
             previousIndex = randomIndex;
-        
+
             // Increment the counter
             imageCounter++;
-            if(imageCounter >0)
+            if(imageCounter > 0)
             {
                 imageCounter = 0;
                 DragStirrer.enabled = true;
@@ -82,33 +82,34 @@ public class MixingSequence : LevelSequence
                 DragStirrer.OnDraggingAction += ChangeImages;
             }
         }
-        else if (imageCounter < 10 && DragStirrer.enabled == true)
+        else if(imageCounter < 10 && DragStirrer.enabled == true)
         {
-            if (imageCounter >=0)
+            if(imageCounter >= 0)
             {
                 Parent.TriggerNextTween();
             }
-            StartCoroutine(ExecuteAfterDelay(0.3f, () => {
-                Debug.Log("Here"); 
+            StartCoroutine(ExecuteAfterDelay(0.3f, () =>
+            {
+                Debug.Log("Here");
                 int randomIndex = UnityEngine.Random.Range(0, FlourStirringImages.Length - 1);
-        
-                if (previousIndex != -1)
+
+                if(previousIndex != -1)
                 {
                     FlourStirringImages[previousIndex].gameObject.SetActive(false);
                 }
-        
+
                 FlourStirringImages[randomIndex].gameObject.SetActive(true);
                 PlayStirrerAnimation("move");
                 // Store the current index sas previous for the next iteration
                 previousIndex = randomIndex;
-        
-                if (tempcounter >= 20)
+
+                if(tempcounter >= 20)
                 {
                     tempcounter = 0;
                     imageCounter++;
                 }
                 tempcounter++;
-                if (imageCounter == 10)
+                if(imageCounter == 10)
                 {
                     Parent.gameObject.SetActive(false);
                     DragStirrer.OnDraggingAction -= ChangeImages;
@@ -119,16 +120,16 @@ public class MixingSequence : LevelSequence
                 }
             }));
         }
-        
+
 
     }
 
     IEnumerator PlayAnimWithDelay(float delay)
     {
         yield return null;
-     
+
         yield return new WaitForSeconds(delay);
-       
+
         BlueBallAnimator.SetTrigger("moveout");
         yield return new WaitForSeconds(delay);
         BigBowl.SetActive(true);
@@ -153,13 +154,13 @@ public class MixingSequence : LevelSequence
     {
         BowlArrow.SetActive(false);
         SmallBlueBall.SetTrigger("rotate");
-        StartCoroutine(ExecuteAfterDelay(0.3f, () => { PouringParticle.SetActive(true);
+        StartCoroutine(ExecuteAfterDelay(0.3f, () =>
+        {
+            PouringParticle.SetActive(true);
             smallbowlFlour.enabled = true;
             BigBowlFlour.enabled = true;
 
         }));
-       
-       
     }
 
     public void EndSequence()
