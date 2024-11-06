@@ -8,11 +8,11 @@ public class MixingSequence : LevelSequence
     [SerializeField] Animator Stirrer;
     [SerializeField] GameObject[] FlourStirringImages;
     [SerializeField] GameObject StartingImage;
-    [SerializeField] GameObject Buttons;
+    [SerializeField] GameObject ButtonsCanvas;
     [SerializeField] GameObject Leanfinger;
     [SerializeField] GameObject LeanfingerPouring;
     [SerializeField] DragObjectWithinBounds DragStirrer;
-    [SerializeField] DOTweenController  Parent;
+    [SerializeField] DOTweenController  StirrerParent;
     [SerializeField] DOTweenController  smallbowlFlour;
     [SerializeField] DOTweenController  BigBowlFlour;
     [SerializeField] Animator BlueBallAnimator,SmallBlueBall;
@@ -21,35 +21,132 @@ public class MixingSequence : LevelSequence
     [SerializeField] GameObject PouringParticle;
     [SerializeField] SpriteRenderer StirrerSpriteRend;
     [SerializeField] Sprite Stirrer1, Stirrer2;
+    [SerializeField] Sprite StirrerTip1, StirrerTip2;
+    [SerializeField] SpriteRenderer StirrerTipRend;
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    [Header("NEW")]
+    public float MixtureFrameInterval = .1f;
+    public float MixtureTipFrameInterval = .1f;
+    public float MixtureRequiredDuration = 3f;
+
+    public float mixerTimeCounter = 0f;
+    public float mixerFrameIntervalCounter = 0f;
+    public float mixerTipIntervalCounter = 0f;
+    bool isCurrentlyMixing;
+    bool isDoneMixing;
     int imageCounter=0;
-    // Start is called before the first frame update
+    bool mixerTipSpriteFlag;
+
     void Start()
     {
-        Buttons.SetActive(true);
+        ButtonsCanvas.SetActive(true);
         //Leanfinger.SetActive(true);
-        DragStirrer.enabled = false;
+        //DragStirrer.enabled = false;
     }
 
-    // Update is called once per frame
+    private void Update()
+    {
+        if(isDoneMixing)
+            return;
+
+        if(isCurrentlyMixing == false)
+            return;
+
+        if(mixerTimeCounter >= MixtureRequiredDuration)
+        {
+            OnDoneMixing();
+            return;
+        }
+
+        if(mixerFrameIntervalCounter >= MixtureFrameInterval)
+        {
+            mixerFrameIntervalCounter = 0f;
+            RandomizeMixtureImage();
+        }
+
+        if(mixerTipIntervalCounter >= MixtureTipFrameInterval)
+        {
+            mixerTipIntervalCounter = 0f;
+            mixerTipSpriteFlag = !mixerTipSpriteFlag;
+            StirrerTipRend.sprite = mixerTipSpriteFlag ? StirrerTip1 : StirrerTip2;
+        }
+
+        mixerTimeCounter += Time.deltaTime;
+        mixerFrameIntervalCounter += Time.deltaTime;
+        mixerTipIntervalCounter += Time.deltaTime;
+    }
+
+
+
+    #region SELF
+
+    public void StartMixing()
+    {
+        if(isDoneMixing)
+            return;
+
+        isCurrentlyMixing = true;
+
+        if(StartingImage.activeInHierarchy)
+        {
+            StartingImage.gameObject.SetActive(false);
+            RandomizeMixtureImage();
+        }
+    }
+
+    public void StopMixing()
+    {
+        isCurrentlyMixing = false;
+    }
+
+    public void OnDoneMixing()
+    {
+        isDoneMixing = true;
+
+        foreach(var item in FlourStirringImages)
+            item.SetActive(false);
+        FlourStirringImages[^1].gameObject.SetActive(true);
+
+
+        StirrerParent.TriggerNextTween();
+        StartCoroutine(PlayAnimWithDelay(2f));
+    }
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region KHALID
 
     public void OnStirrerButtonClick1()
     {
         StirrerSpriteRend.sprite = Stirrer1;
-        Parent.gameObject.SetActive(true);
-        Buttons.GetComponent<DOTweenController>().TriggerNextTween();
+        StirrerParent.gameObject.SetActive(true);
+        ButtonsCanvas.GetComponent<DOTweenController>().TriggerNextTween();
     }
+
     public void OnStirrerButtonClick2()
     {
         StirrerSpriteRend.sprite = Stirrer2;
-        Parent.gameObject.SetActive(true);
-        Buttons.GetComponent<DOTweenController>().TriggerNextTween();
+        StirrerParent.gameObject.SetActive(true);
+        ButtonsCanvas.GetComponent<DOTweenController>().TriggerNextTween();
     }
+
     public void PlayStirrerAnimation(string trigger)
     {
         Stirrer.SetTrigger(trigger);
     }
+
     private int previousIndex = -1;
     private int tempcounter =0;
     public void ChangeImages()
@@ -57,17 +154,7 @@ public class MixingSequence : LevelSequence
         StartingImage.SetActive(false);
         if(imageCounter < 15 && DragStirrer.enabled == false)
         {
-            // Randomly select an image index
-            int randomIndex = UnityEngine.Random.Range(0, FlourStirringImages.Length-1);
-
-            // If there was a previous active image, set it to inactive
-            if(previousIndex != -1)
-            {
-                FlourStirringImages[previousIndex].gameObject.SetActive(false);
-            }
-
-            // Activate the randomly selected image
-            FlourStirringImages[randomIndex].gameObject.SetActive(true);
+            int randomIndex = RandomizeMixtureImage();
             PlayStirrerAnimation("still");
             // Store the current index as previous for the next iteration
             previousIndex = randomIndex;
@@ -86,7 +173,7 @@ public class MixingSequence : LevelSequence
         {
             if(imageCounter >= 0)
             {
-                Parent.TriggerNextTween();
+                StirrerParent.TriggerNextTween();
             }
             StartCoroutine(ExecuteAfterDelay(0.3f, () =>
             {
@@ -111,7 +198,7 @@ public class MixingSequence : LevelSequence
                 tempcounter++;
                 if(imageCounter == 10)
                 {
-                    Parent.gameObject.SetActive(false);
+                    StirrerParent.gameObject.SetActive(false);
                     DragStirrer.OnDraggingAction -= ChangeImages;
                     DragStirrer.enabled = false;
                     FlourStirringImages[^1].gameObject.SetActive(true);
@@ -120,8 +207,18 @@ public class MixingSequence : LevelSequence
                 }
             }));
         }
+    }
 
+    private int RandomizeMixtureImage()
+    {
+        // Randomly select an image index
+        int randomIndex = UnityEngine.Random.Range(0, FlourStirringImages.Length - 2);
 
+        foreach(var item in FlourStirringImages)
+            item.SetActive(false);
+        FlourStirringImages[randomIndex].gameObject.SetActive(true);
+
+        return randomIndex;
     }
 
     IEnumerator PlayAnimWithDelay(float delay)
@@ -129,10 +226,12 @@ public class MixingSequence : LevelSequence
         yield return null;
 
         yield return new WaitForSeconds(delay);
-
         BlueBallAnimator.SetTrigger("moveout");
-        yield return new WaitForSeconds(delay);
+
+        yield return new WaitForSeconds(delay*.5f);
         BigBowl.SetActive(true);
+
+        yield return new WaitForSeconds(1f);
         SmallBlueBall.gameObject.SetActive(true);
         SmallBlueBall.SetTrigger("movein");
 
@@ -169,5 +268,7 @@ public class MixingSequence : LevelSequence
         SmallBlueBall.SetTrigger("moveout");
         BigBowl.GetComponent<DOTweenController>().TriggerNextTween();
     }
+
+    #endregion
 }
 
