@@ -2,16 +2,14 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using System;
 using UnityEngine.Events;
 
-public class JellyBar : MonoBehaviour
+public class SandBag : MonoBehaviour
 {
     public GameObject directionArrow;
-    public GameObject topCap;
+   
     public BoxCollider2D boxCollider;
-    public GameObject[] beasn;
+   
     public Transform instPoint;
     public UnityEvent OnCOmplete;
     public void Start()
@@ -28,7 +26,7 @@ public class JellyBar : MonoBehaviour
     void ThrowJelly()
     {
         boxCollider.enabled = false;
-        topCap.SetActive(false);
+      
         directionArrow.SetActive(false);
 
         transform.DOLocalMove(new Vector3(9.72f, -1.59f, .11755f), 1).OnComplete(() =>
@@ -43,18 +41,14 @@ public class JellyBar : MonoBehaviour
     }
     IEnumerator BeansDrop()
     {
-        for (int i = 0; i < beasn.Length; i++)
-        {
-            Instantiate(beasn[i], instPoint.position, Quaternion.identity);
-            yield return new WaitForSeconds(.3f);
-        }
-
+     
+        yield return new WaitForSeconds(1);
         transform.DOLocalMove(new Vector3(17.6700001f, -5.57000017f, 0.117559448f), 1);
         OnCOmplete?.Invoke();
     }
 
 
-    void SandBag()
+    void SandBagMove()
     {
         transform.DOLocalMove(new Vector3(9.72f, -1.59f, .11755f), 1).OnComplete(() =>
         {
@@ -64,5 +58,4 @@ public class JellyBar : MonoBehaviour
             });
         });
     }
-
 }
